@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "fastapi-blog"
+version = "0.1.0"
+description = "FastApi App for Web Blogging"
+authors = ["Smetanin Aleksandr <smetamx@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.61.2"
+uvicorn = "^0.12.2"
+gino = "^1.0.1"
+pydantic = "^1.7.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.1.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

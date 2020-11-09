@@ -1,2 +1,2 @@
-# flask-blog
-Flask App for Web Blogging
+# fastapi-blog
+FastApi App for Web Blogging
