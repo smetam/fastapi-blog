@@ -7,14 +7,7 @@ from pydantic import BaseSettings
 
 app = FastAPI()
 templates = Jinja2Templates(directory="fastapi_blog/templates")
-app.mount("/static/css", StaticFiles(directory="fastapi_blog/static/css"), name="css")
-app.mount("/static/js", StaticFiles(directory="fastapi_blog/static/js"), name="js")
-app.mount("/static/img", StaticFiles(directory="fastapi_blog/static/img"), name="img")
-app.mount(
-    "/static/webfonts",
-    StaticFiles(directory="fastapi_blog/static/webfonts"),
-    name="webfonts",
-)
+app.mount("/static", StaticFiles(directory="fastapi_blog/static"), name="static")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -30,11 +23,6 @@ def index(request: Request):
 @app.get("/about", response_class=HTMLResponse)
 async def about(request: Request):
     return templates.TemplateResponse("about.html", {"request": request})
-
-
-@app.get("/contact", response_class=HTMLResponse)
-def contact(request: Request):
-    return templates.TemplateResponse("contact.html", {"request": request})
 
 
 @app.get("/post", response_class=HTMLResponse)
