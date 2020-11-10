@@ -10,6 +10,9 @@ fastapi = "^0.61.2"
 uvicorn = "^0.12.2"
 gino = "^1.0.1"
 pydantic = "^1.7.2"
+python-dotenv = "^0.15.0"
+Jinja2 = "^2.11.2"
+aiofiles = "^0.6.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.2"
