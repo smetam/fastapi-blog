@@ -1,22 +1,47 @@
+import os
+
 import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseSettings
 
-app = FastAPI()
+from fastapi_blog.models import database, fetch_post, posts
+from fastapi_blog.utils import init_db
+
 templates = Jinja2Templates(directory="fastapi_blog/templates")
-app.mount("/static", StaticFiles(directory="fastapi_blog/static"), name="static")
+
+
+def get_app() -> FastAPI:
+    app = FastAPI()
+    app.mount("/static", StaticFiles(directory="fastapi_blog/static"), name="static")
+    return app
+
+
+app = get_app()
+
+
+@app.on_event("startup")
+async def startup():
+    await database.connect()
+    if os.environ.get("INIT_DB"):
+        await init_db()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    query = posts.delete()
+    await database.execute(query)
+    await database.disconnect()
 
 
 @app.get("/", response_class=HTMLResponse)
-def home(request: Request):
+async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/index", response_class=HTMLResponse)
-def index(request: Request):
+async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
@@ -26,9 +51,17 @@ async def about(request: Request):
 
 
 @app.get("/post", response_class=HTMLResponse)
-def post(request: Request):
-    return templates.TemplateResponse("post.html", {"request": request})
+async def post(request: Request):
+    post = await fetch_post(1)
+    print(post)
+    return templates.TemplateResponse("post.html", {"request": request, "post": post})
+
+
+@app.get("/post/{post_id}", response_class=HTMLResponse)
+async def post_by_id(request: Request, post_id: int):
+    post = await fetch_post(post_id)
+    return templates.TemplateResponse("post.html", {"request": request, "post": post})
 
 
 if __name__ == "__main__":
-    uvicorn.run("fastapi_blog:app")
+    uvicorn.run("fastapi_blog.app:app")
