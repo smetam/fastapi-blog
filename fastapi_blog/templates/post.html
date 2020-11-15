@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<!-- Head -->
-{{ reusable.head | safe }}
-
-<body>
-
-  <!-- Navigation -->
-  {{ reusable.navbar | safe }}
+{% extends "base.html" %}
 
   <!-- Page Header -->
+{% block header %}
   <header class="masthead" style="background-image: url({{ url_for('static', path='/img/post-bg.jpg') }})">
     <div class="overlay"></div>
     <div class="container">
@@ -28,8 +21,11 @@
       </div>
     </div>
   </header>
+{% endblock %}
 
   <!-- Post Content -->
+{% block content %}
+
   <article>
     <div class="container">
       <div class="row">
@@ -39,15 +35,4 @@
       </div>
     </div>
   </article>
-
-  <hr>
-
-  <!-- Footer -->
-  {{ reusable.footer | safe }}
-
-  <!-- Scripts -->
-  {{ reusable.scripts | safe }}
-
-</body>
-
-</html>
+{% endblock %}

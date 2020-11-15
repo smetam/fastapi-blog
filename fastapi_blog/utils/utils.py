@@ -1,16 +1,11 @@
 import datetime
 import json
-from collections import namedtuple
 from typing import Any, Dict, Union
 
 from fastapi import Request
-from fastapi.templating import Jinja2Templates
 
 from fastapi_blog import INIT_DATA_PATH
 from fastapi_blog.models import database, post_tags, posts, tags
-
-reusable_templates = Jinja2Templates(directory="fastapi_blog/templates/reusable")
-Reusable = namedtuple("Reusable", ("head", "navbar", "footer", "scripts"))
 
 
 def parse_date(date_str):
@@ -45,17 +40,6 @@ async def teardown_db():
         await database.execute(query)
 
 
-def get_reusable(request: Request) -> Reusable:
-    head = reusable_templates.TemplateResponse("head.html", {"request": request})
-    footer = reusable_templates.TemplateResponse("footer.html", {"request": request})
-    navbar = reusable_templates.TemplateResponse("navbar.html", {"request": request})
-    scripts = reusable_templates.TemplateResponse("scripts.html", {"request": request})
-    return Reusable(
-        *[item.body.decode("utf-8") for item in (head, navbar, footer, scripts)]
-    )
-
-
 def get_context(request: Request, **kwargs) -> Dict[str, Any]:
-    reusable = get_reusable(request)
-    context = {"request": request, "reusable": reusable, **kwargs}
+    context = {"request": request, **kwargs}
     return context
