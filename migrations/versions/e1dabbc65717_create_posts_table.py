@@ -27,6 +27,31 @@ def upgrade():
         sqlalchemy.Column("completed", sqlalchemy.Boolean, nullable=False),
     )
 
+    op.create_table(
+        "post_tags",
+        sqlalchemy.Column(
+            "post_id",
+            sqlalchemy.Integer,
+            sqlalchemy.ForeignKey("posts.post_id"),
+            primary_key=True,
+        ),
+        sqlalchemy.Column(
+            "tag_id",
+            sqlalchemy.Integer,
+            sqlalchemy.ForeignKey("tags.tag_id"),
+            primary_key=True,
+        ),
+    )
+
+    op.create_table(
+        "tags",
+        sqlalchemy.Column("tag_id", sqlalchemy.Integer, primary_key=True),
+        sqlalchemy.Column("name", sqlalchemy.String, nullable=False),
+        sqlalchemy.Column("description", sqlalchemy.String, nullable=False),
+    )
+
 
 def downgrade():
     op.drop_table("posts")
+    op.drop_table("post_tags")
+    op.drop_table("tags")

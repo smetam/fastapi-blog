@@ -6,8 +6,9 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from fastapi_blog.models import database, fetch_post, posts
-from fastapi_blog.utils import init_db
+from fastapi_blog.models import database  # fetch_tags, fetch_tags
+from fastapi_blog.models import fetch_post, fetch_posts
+from fastapi_blog.utils import get_context, init_db, teardown_db
 
 templates = Jinja2Templates(directory="fastapi_blog/templates")
 
@@ -25,42 +26,54 @@ app = get_app()
 async def startup():
     await database.connect()
     if os.environ.get("INIT_DB"):
+        await teardown_db()
         await init_db()
 
 
 @app.on_event("shutdown")
 async def shutdown():
-    query = posts.delete()
-    await database.execute(query)
+    if os.environ.get("TEARDOWN_DB"):
+        await teardown_db()
     await database.disconnect()
 
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    context = get_context(request)
+    return templates.TemplateResponse("index.html", context)
 
 
 @app.get("/index", response_class=HTMLResponse)
 async def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    posts = await fetch_posts()
+    context = get_context(request, posts=posts)
+    return templates.TemplateResponse("index.html", context)
 
 
 @app.get("/about", response_class=HTMLResponse)
 async def about(request: Request):
-    return templates.TemplateResponse("about.html", {"request": request})
+    context = get_context(request)
+    return templates.TemplateResponse("about.html", context)
 
 
 @app.get("/post", response_class=HTMLResponse)
 async def post(request: Request):
-    post = await fetch_post(1)
-    print(post)
-    return templates.TemplateResponse("post.html", {"request": request, "post": post})
+    post = await fetch_post()
+    context = get_context(request, post=post)
+    return templates.TemplateResponse("post.html", context)
 
 
-@app.get("/post/{post_id}", response_class=HTMLResponse)
-async def post_by_id(request: Request, post_id: int):
+@app.get("/post/{post_id:int}", response_class=HTMLResponse)
+async def post(request: Request, post_id: int):
     post = await fetch_post(post_id)
-    return templates.TemplateResponse("post.html", {"request": request, "post": post})
+    context = get_context(request, post=post)
+    return templates.TemplateResponse("post.html", context)
+
+
+# @app.get("/tag/{tag_id:int}", response_class=HTMLResponse)
+# async def tag(request: Request, tag_id: int):
+#     post = await fetch_tag(tag_id)
+#     return templates.TemplateResponse("post.html", {"request": request, "post": post})
 
 
 if __name__ == "__main__":

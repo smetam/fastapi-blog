@@ -151,6 +151,14 @@ babel = ["babel"]
 lingua = ["lingua"]
 
 [[package]]
+name = "markdown2"
+version = "2.3.10"
+description = "A fast and complete Python implementation of Markdown"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "markupsafe"
 version = "1.1.1"
 description = "Safely add untrusted strings to HTML/XML markup."
@@ -335,7 +343,7 @@ standard = ["websockets (>=8.0.0,<9.0.0)", "watchgod (>=0.6,<0.7)", "python-dote
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "e9229935aeb4e8b7932000983a8ffd071fdd7a34a82bb0450a9f4676b529cf66"
+content-hash = "33e2dd2c0cbc73ab036d1c1ea0e1f18396d98c07209e526c5eb5a701290c6849"
 
 [metadata.files]
 aiofiles = [
@@ -389,6 +397,10 @@ jinja2 = [
 mako = [
     {file = "Mako-1.1.3-py2.py3-none-any.whl", hash = "sha256:93729a258e4ff0747c876bd9e20df1b9758028946e976324ccd2d68245c7b6a9"},
     {file = "Mako-1.1.3.tar.gz", hash = "sha256:8195c8c1400ceb53496064314c6736719c6f25e7479cd24c77be3d9361cddc27"},
+]
+markdown2 = [
+    {file = "markdown2-2.3.10-py2.py3-none-any.whl", hash = "sha256:fef148e5fd68d4532286c3e2943e9d2c076a8ad781b0a70a9d599a0ffe91652d"},
+    {file = "markdown2-2.3.10.tar.gz", hash = "sha256:85956d8119fa6378156fef65545d66705a842819d2e1b50379a2b9d2aaa17cf0"},
 ]
 markupsafe = [
     {file = "MarkupSafe-1.1.1-cp27-cp27m-macosx_10_6_intel.whl", hash = "sha256:09027a7803a62ca78792ad89403b1b7a73a01c8cb65909cd876f7fcebd79b161"},
