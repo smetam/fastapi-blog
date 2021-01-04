@@ -1,0 +1,5 @@
+{% for post in posts %}
+  {% include 'post_preview.html' %}
+{% endfor %}
+<div hx-get="{{ url_for('posts', page=page + 1) }}" hx-trigger="revealed" hx-swap="afterend">
+</div>

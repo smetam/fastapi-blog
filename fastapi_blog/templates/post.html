@@ -14,7 +14,7 @@
             {% endfor %}
             <h2 class="subheading"> {{ post.subtitle }} </h2>
             <span class="meta">Posted by
-              <a href="#"> {{ post.author }} </a>
+              <a href="{{ url_for('about') }}"> {{ post.author }} </a>
               on {{ post.date.strftime('%B %d, %Y') }} </span>
           </div>
         </div>
@@ -32,7 +32,17 @@
         <div class="col-lg-8 col-md-10 mx-auto">
           {{post.content}}
         </div>
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <script src="https://utteranc.es/client.js"
+            repo="smetam/utterances-comments"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+          </script>
+        </div>
       </div>
     </div>
   </article>
+
 {% endblock %}

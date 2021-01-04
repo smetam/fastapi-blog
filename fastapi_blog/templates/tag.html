@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+
+  <!-- Page Header -->
+{% block header %}
+  <header class="masthead" style="background-image: url({{ url_for('static', path='/img/post-bg.jpg') }})">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1> {{ tag.name }} </h1>
+            <h2 class="subheading"> {{ tag.description }} </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+          <div hx-get="{{ url_for('tag', tag_id=tag.tag_id, page=page + 1) }}" hx-trigger="revealed" hx-swap="afterend">
+          </div>
+      </div>
+    </div>
+</div>
+{% endblock content %}

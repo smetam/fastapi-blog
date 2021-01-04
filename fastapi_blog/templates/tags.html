@@ -8,8 +8,8 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="site-heading">
-            <h1>Clean Blog</h1>
-            <span class="subheading">A Blog Theme by Start Bootstrap</span>
+            <h1>Tags</h1>
+            <span class="subheading">Quick navigation</span>
           </div>
         </div>
       </div>
@@ -22,30 +22,19 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        {% for post in posts %}
+        {% for tag in tags %}
         <div class="post-preview">
-          <a href="{{ url_for('post', post_id=post.post_id) }}">
+          <a href="{{ url_for('tag', tag_id=tag.tag_id) }}">
             <h2 class="post-title">
-              {{ post.title }}
+              {{ tag.name }}
             </h2>
-            {% for tag in post.tag_list %}
-              <span class="badge badge-secondary">#{{ tag }}</span>
-            {% endfor %}
-            <h3 class="post-subtitle">
-              {{ post.subtitle }}
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#"> {{ post.author }} </a>
-            on {{ post.date.strftime('%B %d, %Y') }}</p>
         </div>
         <hr>
         {% endfor %}
 
         <!-- Pager -->
         <div class="clearfix">
-          <a class="btn btn-primary float-left" href="#"> &larr; Newer Posts</a>
-          <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+          <a class="btn btn-primary float-right" href="#">More Tags &rarr;</a>
         </div>
       </div>
     </div>
