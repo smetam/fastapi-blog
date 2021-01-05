@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import List, Mapping, Optional
 
 import databases
+import markdown2
 import sqlalchemy
 from pydantic import BaseModel
 from sqlalchemy import desc, func, select
@@ -102,6 +103,7 @@ async def fetch_post(post_id: int = None) -> Optional[Mapping]:
     post["tag_list"] = (
         post["tag_list"].split(",") if post["tag_list"] is not None else []
     )
+    post["content"] = markdown2.markdown(post["content"])
     return post
 
 
